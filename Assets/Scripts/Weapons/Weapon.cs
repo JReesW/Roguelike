@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Team
+{
+    Player,
+    Enemy
+}
+
 public interface Weapon
 {
     void Attack();
@@ -53,8 +59,22 @@ public abstract class Sword : MonoBehaviour, Weapon
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        GameObject enemy = collision.gameObject;
+        GameObject hitObject = collision.gameObject;
 
-        enemy.SendMessage("Hit", damage);
+        HitInfo info = new HitInfo(damage, Team.Player);
+
+        hitObject.GetComponent<HitObject>().Hit(info);
+    }
+}
+
+public class HitInfo
+{
+    public float damage;
+    public Team team;
+
+    public HitInfo (float damage, Team team)
+    {
+        this.damage = damage;
+        this.team = team;
     }
 }

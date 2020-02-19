@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class nob : MonoBehaviour
+public class nob : MonoBehaviour, HitObject
 {
     public float speed;
 
@@ -28,9 +28,17 @@ public class nob : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        //Movement
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
 
+        Vector2 movement = new Vector2(moveHorizontal, moveVertical);
+        rigidBody.velocity = movement * speed;
+
+
+
+
+        //Rotation
         Vector2 mouse = Camera.main.ScreenToViewportPoint(Input.mousePosition);
         Vector2 playerPos = Camera.main.WorldToViewportPoint(transform.position);
 
@@ -38,7 +46,7 @@ public class nob : MonoBehaviour
         float dx = mouse.x - playerPos.x;
         float angle;
 
-        if(mouse.y > playerPos.y)
+        if (mouse.y > playerPos.y)
         {
             angle = Mathf.Acos(dx / d) * Mathf.Rad2Deg;
         }
@@ -46,12 +54,9 @@ public class nob : MonoBehaviour
         {
             angle = 360 - (Mathf.Acos(dx / d) * Mathf.Rad2Deg);
         }
-        
 
         rigidBody.SetRotation(angle - 90);
-        
-        Vector2 movement = new Vector2(moveHorizontal, moveVertical);
-        rigidBody.velocity = movement * speed;
+
     }
 
     float AngleBetweenTwoPoints(Vector3 a, Vector3 b)
@@ -59,8 +64,11 @@ public class nob : MonoBehaviour
         return Mathf.Atan2(a.y - b.y, a.x - b.x) * Mathf.Rad2Deg;
     }
 
-    void Hit()
+    public void Hit(HitInfo hitInfo)
     {
-        Debug.Log("Player is hit");
+        if (hitInfo.team != Team.Player)
+        {
+            Debug.Log("Player is hit");
+        }
     }
 }
