@@ -10,13 +10,14 @@ public class katana_weeb_lol : Sword
     public Vector3 offset;
 
 
-    void Start()
+    new void Start()
     {
         //rigidBody = gameObject.GetComponent<Rigidbody2D>();
         //player = gameObject.GetComponent<Rigidbody2D>();
         base.Start();
         attackSpeed = .5f;
         damage = 5;
+        attackAnim = gameObject.GetComponent<Animation>();
     }
     void FixedUpdate()
     {

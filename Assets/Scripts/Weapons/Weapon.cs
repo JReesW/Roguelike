@@ -18,6 +18,7 @@ public abstract class Sword : MonoBehaviour, Weapon
     protected float attackSpeed;
     protected float damage;
     PolygonCollider2D baseCollider;
+    protected Animation attackAnim;
 
     int timer;
     bool col;
@@ -40,8 +41,9 @@ public abstract class Sword : MonoBehaviour, Weapon
                 timer = 0;
                 col = false;
 
-                PolygonCollider2D collider = gameObject.GetComponent<PolygonCollider2D>();
+                BoxCollider2D collider = gameObject.GetComponent<BoxCollider2D>();
 
+                attackAnim.Play("Sheath");
                 Destroy(collider);
                 Debug.Log("Collider no longer active!");
             }
@@ -50,21 +52,22 @@ public abstract class Sword : MonoBehaviour, Weapon
 
     public void Attack()
     {
-        Debug.Log(damage);
-        PolygonCollider2D collider = gameObject.AddComponent(typeof(PolygonCollider2D)) as PolygonCollider2D;
-        collider = baseCollider;
+        attackAnim.Play("Swipe");
+
+        gameObject.AddComponent(typeof(BoxCollider2D));
+        //collider = baseCollider;
         col = true;
         Debug.Log("Collider now active!");
      }
 
-    public void OnCollisionEnter2D(Collision2D collision)
-    {
-        GameObject hitObject = collision.gameObject;
+    //public void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    GameObject hitObject = collision.gameObject;
 
-        HitInfo info = new HitInfo(damage, Team.Player);
+    //    HitInfo info = new HitInfo(damage, Team.Player);
 
-        hitObject.GetComponent<HitObject>().Hit(info);
-    }
+    //    hitObject.GetComponent<HitObject>().Hit(info);
+    //}
 }
 
 public class HitInfo

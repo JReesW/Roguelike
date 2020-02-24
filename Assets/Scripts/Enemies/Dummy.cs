@@ -2,8 +2,6 @@
 
 public class Dummy : Enemy
 {
-    float damage;
-    float health;
 
     // Start is called before the first frame update
     void Start()
@@ -28,5 +26,10 @@ public class Dummy : Enemy
             Debug.Log($"Ow! I took {hitInfo.damage} damage");
             health -= hitInfo.damage;
         }
+    }
+
+    public override void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log(collision.gameObject);
     }
 }
